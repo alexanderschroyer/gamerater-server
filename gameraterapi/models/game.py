@@ -10,4 +10,4 @@ class Game(models.Model):
     number_of_players = models.IntegerField()
     estimated_time_to_play = models.CharField(max_length=50)
     age_recommendation = models.IntegerField()
-    created_on = models.DateField()
+    created_on = models.CharField(max_length=50)
