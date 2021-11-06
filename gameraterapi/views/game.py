@@ -118,6 +118,7 @@ class RaterSerializer(serializers.ModelSerializer):
     Arguments:
         serializer type
     """
+    user = UserSerializer()
     class Meta:
         model = Rater
         fields = ('id', 'user', 'bio')
@@ -128,6 +129,7 @@ class GameSerializer(serializers.ModelSerializer):
     Arguments:
         serializer type
     """
+    rater = RaterSerializer()
     class Meta:
         model = Game
         fields = ('id', 'rater', 'title', 'description', 'designer', 'year_released', 'number_of_players', 'estimated_time_to_play', 'age_recommendation', 'created_on')
