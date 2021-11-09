@@ -6,7 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from gameraterapi.models import Game, Rater
+from gameraterapi.models import Game, Rater, Category
 
 class GameView(ViewSet):
     """Game Rater Games"""
@@ -19,11 +19,13 @@ class GameView(ViewSet):
         """
 
         rater = Rater.objects.get(user=request.auth.user)
+        category = Category.objects.get(pk=request.data["categoryId"])
 
         try:
             game = Game.objects.create(
                 rater=rater,
                 title=request.data["title"],
+                category=category,
                 description=request.data["description"],
                 designer=request.data["designer"],
                 year_released=request.data["yearReleased"],
@@ -58,9 +60,11 @@ class GameView(ViewSet):
             Response -- Empty body with 204 status code
         """
         rater = Rater.objects.get(user=request.auth.user)
+        category = Category.objects.get(pk=request.data["categoryId"])
 
         game = Game.objects.get(pk=pk)
         game.title = request.data["title"]
+        game.category = category
         game.description = request.data["description"]
         game.designer = request.data["designer"]
         game.year_released = request.data["yearReleased"]
@@ -123,6 +127,17 @@ class RaterSerializer(serializers.ModelSerializer):
         model = Rater
         fields = ('id', 'user', 'bio')
 
+class CategorySerializer(serializers.ModelSerializer):
+    """JSON serializer for categories
+
+    Arguments:
+        serializer type
+        """
+    class Meta:
+        model = Category
+        fields = ('id', 'label')
+
+
 class GameSerializer(serializers.ModelSerializer):
     """JSON serializer for games
 
@@ -130,6 +145,7 @@ class GameSerializer(serializers.ModelSerializer):
         serializer type
     """
     rater = RaterSerializer()
+    category = CategorySerializer()
     class Meta:
         model = Game
-        fields = ('id', 'rater', 'title', 'description', 'designer', 'year_released', 'number_of_players', 'estimated_time_to_play', 'age_recommendation', 'created_on')
+        fields = ('id', 'rater', 'title', 'category', 'description', 'designer', 'year_released', 'number_of_players', 'estimated_time_to_play', 'age_recommendation', 'created_on')

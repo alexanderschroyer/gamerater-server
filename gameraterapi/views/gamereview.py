@@ -51,8 +51,21 @@ class GameReviewView(ViewSet):
         Returns:
             Response -- JSON serialized game instance
         """
+        try:
+            review = Review.objects.get(pk=pk)
+            serializer = GameReviewSerializer(review, context={'request': request})
+            return Response(serializer.data)
+        except Exception as ex:
+            return HttpResponseServerError(ex)
+
+    def update(self, request, pk=None):
+        """Handle PUT requests for a review
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """
         rater = Rater.objects.get(user=request.auth.user)
-        game = Game.objects.get(pk=request.data["gameId"])
+        game = Game.objects.get(pk=pk)
 
         review = Review.objects.get(pk=pk)
         review.rater = rater
@@ -107,10 +120,9 @@ class GameSerializer(serializers.ModelSerializer):
     Arguments:
         serializer type
     """
-    rater = RaterSerializer()
     class Meta:
         model = Game
-        fields = ('id', 'rater', 'title',)
+        fields = ('id', 'rater', 'title')
 
 class GameReviewSerializer(serializers.ModelSerializer):
     """JSON serializer for game reviews
@@ -119,6 +131,7 @@ class GameReviewSerializer(serializers.ModelSerializer):
         serializer type
     """
     game = GameSerializer()
+    rater = RaterSerializer()
     class Meta:
         model = Review
         fields = ('id', 'game', 'rater', 'content', 'created_on')

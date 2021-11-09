@@ -5,6 +5,7 @@
         "fields": {
             "rater": 1,
             "title": "Total War: Shogun 2",
+            "category_id": 1,
             "description": "Rival clans fight for control of Japan. Much fun.",
             "designer": "Creative Assembly",
             "year_released": "2011",
@@ -20,6 +21,7 @@
         "fields": {
             "rater": 1,
             "title": "Yahtzee",
+            "category_id": 2,
             "description": "Score points by rolling dice and getting certain combinations.",
             "designer": "Hasbro",
             "year_released": "1940",
@@ -35,6 +37,7 @@
         "fields": {
             "rater": 1,
             "title": "Pokemon",
+            "category_id": 5,
             "description": "Collect 'em all and battle against rivals.",
             "designer": "Nintendo",
             "year_released": "1996",

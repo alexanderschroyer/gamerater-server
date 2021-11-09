@@ -4,6 +4,7 @@ class Game(models.Model):
     """game model"""
     rater = models.ForeignKey("Rater", on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
+    category = models.ForeignKey("Category", on_delete=models.CASCADE)
     description = models.TextField()
     designer = models.CharField(max_length=50)
     year_released = models.IntegerField()
